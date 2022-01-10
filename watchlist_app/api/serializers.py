@@ -1,31 +1,43 @@
 from rest_framework import serializers
-from watchlist_app.models import Movies
+from watchlist_app.models import WatchList,StreamPlatform
 
 
-class MovieSerializer(serializers.ModelSerializer):
-    len_name = serializers.SerializerMethodField()
+class WatchListSerializer(serializers.ModelSerializer):
+    # len_name = serializers.SerializerMethodField()
     class Meta:
-        model = Movies
+        model = WatchList
         fields = '__all__'
-        # fields = ['id','description','name']
+        # fields = ['id','storyline','title']
         # exclude =['active'] # except 
     
-    def get_len_name(self,object):
-        length = len(object.name)
-        return length
+
+class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name="platform_detail")
+    platform = WatchListSerializer(many=True,read_only=True)
+    # platform = serializers.StringRelatedField(many= True)
+    # platform = serializers.PrimaryKeyRelatedField(many= True,read_only=True)
+    # platform = serializers.HyperlinkedIdentityField(many= True,read_only=True,view_name='platform_detail')
+    
+    class Meta:
+        model = StreamPlatform
+        fields = '__all__'
+
+    # def get_len_name(self,object):
+    #     length = len(object.name)
+    #     return length
         
-    def validate(self,data):
-        if data['name'] == data['description']:
-            raise serializers.ValidationError('name and description should be different')
-        else:
-            return data
+    # def validate(self,data):
+    #     if data['name'] == data['description']:
+    #         raise serializers.ValidationError('name and description should be different')
+    #     else:
+    #         return data
 
     
-    def validate_name(self,value):
-        if len(value) < 2:
-            raise serializers.ValidationError('name is too short')
-        else:
-            return value
+    # def validate_name(self,value):
+    #     if len(value) < 2:
+    #         raise serializers.ValidationError('name is too short')
+    #     else:
+    #         return value
         
 
 # def description_length(value):
