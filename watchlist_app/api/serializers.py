@@ -1,27 +1,19 @@
 from rest_framework import serializers
 from watchlist_app.models import Movies
 
-def description_length(value):
-    if len(value) < 10:
-        raise serializers.ValidationError('description is too short')
-    else:
-        return value
-class MovieSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField()
-    description = serializers.CharField(validators=[description_length])
-    active = serializers.BooleanField()
+
+class MovieSerializer(serializers.ModelSerializer):
+    len_name = serializers.SerializerMethodField()
+    class Meta:
+        model = Movies
+        fields = '__all__'
+        # fields = ['id','description','name']
+        # exclude =['active'] # except 
     
-    def create(self,validated_data):
-        return Movies.objects.create(**validated_data)
-    
-    def update(self,instace,validated_data):
-        instace.name = validated_data.get('name',instace.name)
-        instace.description = validated_data.get('description',instace.description)
-        instace.active = validated_data.get('active',instace.active)
-        instace.save()
-        return instace
-    
+    def get_len_name(self,object):
+        length = len(object.name)
+        return length
+        
     def validate(self,data):
         if data['name'] == data['description']:
             raise serializers.ValidationError('name and description should be different')
@@ -34,4 +26,39 @@ class MovieSerializer(serializers.Serializer):
             raise serializers.ValidationError('name is too short')
         else:
             return value
+        
+
+# def description_length(value):
+#     if len(value) < 10:
+#         raise serializers.ValidationError('description is too short')
+#     else:
+#         return value
+# class MovieSerializer(serializers.Serializer):
+#     id = serializers.IntegerField(read_only=True)
+#     name = serializers.CharField()
+#     description = serializers.CharField(validators=[description_length])
+#     active = serializers.BooleanField()
+    
+#     def create(self,validated_data):
+#         return Movies.objects.create(**validated_data)
+    
+#     def update(self,instace,validated_data):
+#         instace.name = validated_data.get('name',instace.name)
+#         instace.description = validated_data.get('description',instace.description)
+#         instace.active = validated_data.get('active',instace.active)
+#         instace.save()
+#         return instace
+    
+#     def validate(self,data):
+#         if data['name'] == data['description']:
+#             raise serializers.ValidationError('name and description should be different')
+#         else:
+#             return data
+
+    
+#     def validate_name(self,value):
+#         if len(value) < 2:
+#             raise serializers.ValidationError('name is too short')
+#         else:
+#             return value
         
