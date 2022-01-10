@@ -1,9 +1,13 @@
 from rest_framework import serializers
-from watchlist_app.models import WatchList,StreamPlatform
+from watchlist_app.models import WatchList,StreamPlatform,Review
 
-
+class ReviewSerailizer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
 class WatchListSerializer(serializers.ModelSerializer):
     # len_name = serializers.SerializerMethodField()
+    reviews = ReviewSerailizer(many= True,read_only=True)
     class Meta:
         model = WatchList
         fields = '__all__'
@@ -21,6 +25,7 @@ class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = StreamPlatform
         fields = '__all__'
+
 
     # def get_len_name(self,object):
     #     length = len(object.name)
