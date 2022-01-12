@@ -8,8 +8,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated,IsAdminUser,IsAuthenticatedOrReadOnly
 from .permissions import AdminOrReadOnly,ReviewUserOrReadOnly
+from .throttling import ReviewCreateTh,ReviewListTh
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerailizer
+    throttle_classes=[ReviewCreateTh]
     
     def get_queryset(self):
         return Review.objects.all()
@@ -33,10 +35,18 @@ class ReviewCreate(generics.CreateAPIView):
         serializer.save(watchlist_app = watchlist,review_user=review_user)
         
         
+class UserReview(generics.ListAPIView):
+    serializer_class = ReviewSerailizer
+    
+    
+    def get_queryset(self):
+        username = self.kwargs['username']
+        return Review.objects.filter(review_user__username=username)
 class ReviewList(generics.ListCreateAPIView):
     # queryset = Review.objects.all()
     serializer_class = ReviewSerailizer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    throttle_classes=[ReviewListTh]
     
     def get_queryset(self):
         pk = self.kwargs['pk']

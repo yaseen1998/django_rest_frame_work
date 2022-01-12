@@ -4,11 +4,19 @@ from rest_framework import serializers
 # Create your models here.
 
 class RegistrationSerializer(serializers.ModelSerializer):
+    ROLES = (
+
+        ('Doner', 'Doner'),
+        ('Hospital', 'Hospital'),
+        ("Patient","Patient")
+
+    )
+        
     password2 = serializers.CharField(style = {'input_type':'password'},write_only=True)
-    
+    roles = serializers.CharField()
     class Meta:
         model = User
-        fields = ['username','email','password','password2']
+        fields = ['username','email','password','password2','roles']
         extra_kwargs = {
             'password':{'write_only':True}
         }
