@@ -11,7 +11,7 @@ from .permissions import AdminOrReadOnly,ReviewUserOrReadOnly
 from .throttling import ReviewCreateTh,ReviewListTh
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
-from .pagination import WatchListPagination
+from .pagination import WatchListPagination,WatchListLimit,WatchListCursor
 
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerailizer
@@ -175,11 +175,13 @@ class WatchListAV(APIView):
 class WatchListGV(generics.ListAPIView):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
-    pagination_class = WatchListPagination
+    # pagination_class = WatchListLimit
+    pagination_class = WatchListCursor ## must remove filter because order by create
+    # pagination_class = WatchListPagination
     # filter_backends = [filters.SearchFilter]
-    filter_backends = [filters.OrderingFilter]
+    # filter_backends = [filters.OrderingFilter]
     # search_fields  = ['title', 'platform__name']
-    ordering_fields  = ['avg_ratings']
+    # ordering_fields  = ['avg_ratings']
    
 class WatchDetailAV(APIView):
     def get(self, request,pk):
