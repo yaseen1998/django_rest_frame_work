@@ -2,9 +2,9 @@ from watchlist_app.models import WatchList,StreamPlatform,Review
 from rest_framework.response import Response
 from .serializers import WatchListSerializer,StreamPlatformSerializer,ReviewSerailizer
 from rest_framework.decorators import api_view
-from rest_framework import status,mixins,generics
+from rest_framework import status,mixins,generics,viewsets
 from rest_framework.views import APIView
-
+from django.shortcuts import get_object_or_404
 
 
 class ReviewCreate(generics.CreateAPIView):
@@ -46,6 +46,37 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 #     def post(self, request, *args, **kwargs):
 #         return self.create(request, *args, **kwargs)
+
+class StreamPlatformVS(viewsets.ModelViewSet): ## ReadOnlyModelViewSet
+    queryset = StreamPlatform.objects.all()
+    serializer_class = StreamPlatformSerializer
+# class StreamPlatformVS(viewsets.ViewSet):
+#     """
+#     A simple ViewSet for listing or retrieving users.
+#     """
+#     def list(self, request):
+#         queryset = StreamPlatform.objects.all()
+#         serializer = StreamPlatformSerializer(queryset, many=True)
+#         return Response(serializer.data)
+
+#     def retrieve(self, request, pk=None):
+#         queryset = StreamPlatform.objects.all()
+#         watchlist = get_object_or_404(queryset, pk=pk)
+#         serializer = StreamPlatformSerializer(watchlist)
+#         return Response(serializer.data)
+    
+#     def create(self,request):
+#         serializer = StreamPlatformSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors)
+        
+#     def destroy(self, request, pk=None):
+#         movie = StreamPlatform.objects.get(pk=pk)
+#         movie.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 class StreamPlatformAV(APIView):
     
     def get(self, request):

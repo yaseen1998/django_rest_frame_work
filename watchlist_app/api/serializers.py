@@ -5,7 +5,7 @@ class ReviewSerailizer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
-        exclude = ('watchlist_app')
+        # exclude = ('watchlist_app',)
 class WatchListSerializer(serializers.ModelSerializer):
     # len_name = serializers.SerializerMethodField()
     reviews = ReviewSerailizer(many= True,read_only=True)
@@ -16,8 +16,8 @@ class WatchListSerializer(serializers.ModelSerializer):
         # exclude =['active'] # except 
     
 
-class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name="platform_detail")
+class StreamPlatformSerializer(serializers.ModelSerializer):
+    # url = serializers.HyperlinkedIdentityField(view_name="platform_detail")
     platform = WatchListSerializer(many=True,read_only=True)
     # platform = serializers.StringRelatedField(many= True)
     # platform = serializers.PrimaryKeyRelatedField(many= True,read_only=True)
