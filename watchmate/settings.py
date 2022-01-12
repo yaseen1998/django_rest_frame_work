@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'watchlist_app',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
 
 ]
 
@@ -147,5 +148,7 @@ REST_FRAMEWORK = {
         'user': '3/day',
         'review-create':'1/day',
         'review-list':'5/day',
-    }
+    },
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 5
 }

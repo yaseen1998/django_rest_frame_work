@@ -9,6 +9,10 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated,IsAdminUser,IsAuthenticatedOrReadOnly
 from .permissions import AdminOrReadOnly,ReviewUserOrReadOnly
 from .throttling import ReviewCreateTh,ReviewListTh
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from .pagination import WatchListPagination
+
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerailizer
     throttle_classes=[ReviewCreateTh]
@@ -39,15 +43,21 @@ class UserReview(generics.ListAPIView):
     serializer_class = ReviewSerailizer
     
     
+    # def get_queryset(self):
+    #     username = self.kwargs['username']
+    #     return Review.objects.filter(review_user__username=username)
+    
     def get_queryset(self):
-        username = self.kwargs['username']
+        username = self.request.query_params.get('username')
         return Review.objects.filter(review_user__username=username)
 class ReviewList(generics.ListCreateAPIView):
     # queryset = Review.objects.all()
     serializer_class = ReviewSerailizer
     # permission_classes = [IsAuthenticated]
-    throttle_classes=[ReviewListTh]
-    
+    # throttle_classes=[ReviewListTh]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['review_user__username', 'active']
+
     def get_queryset(self):
         pk = self.kwargs['pk']
         return Review.objects.filter(watchlist_app=pk)
@@ -160,6 +170,16 @@ class WatchListAV(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+   
+        return Response(status=status.HTTP_204_NO_CONTENT)
+class WatchListGV(generics.ListAPIView):
+    queryset = WatchList.objects.all()
+    serializer_class = WatchListSerializer
+    pagination_class = WatchListPagination
+    # filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.OrderingFilter]
+    # search_fields  = ['title', 'platform__name']
+    ordering_fields  = ['avg_ratings']
    
 class WatchDetailAV(APIView):
     def get(self, request,pk):
