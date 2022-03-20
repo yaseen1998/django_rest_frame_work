@@ -8,9 +8,10 @@ authors = ["yaseen1998 <yasseenkouthe@eng.hu.edu>"]
 python = "^3.9"
 Django = "^4.0.1"
 djangorestframework = "^3.13.1"
+awsebcli = "^3.20.2"
+django-nextjs = "^2.1.1"
 
-[tool.poetry.dev-dependencies]
-black = "^21.12b0"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
