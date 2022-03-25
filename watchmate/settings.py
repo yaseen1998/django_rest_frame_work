@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_forest',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'watchlist_app',
     'rest_framework',
-    'django_nextjs'
+    'django_nextjs',
+    
 ]
 
 MIDDLEWARE = [
@@ -120,11 +122,17 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
+STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIRS = (BASE_DIR /'staticfile',)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+FOREST = {
+   'FOREST_URL': 'https://api.forestadmin.com',
+   'APPLICATION_URL': 'http://localhost:8000',
+   'FOREST_ENV_SECRET': '35b3adbba20023e46b327492f439f6ea4c99b2e79d74b47f804b91fef3e4a4c5',
+   'FOREST_AUTH_SECRET': '32734402dad94f5787b2208a320e31fb888b46cc99350a88'
+}
+APPEND_SLASH=False

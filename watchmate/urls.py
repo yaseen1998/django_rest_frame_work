@@ -19,5 +19,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('watchlist_app.api.urls')),
-    path('',include('django_nextjs.urls'))
+    path('',include('django_nextjs.urls')),
+    path('forest', include('django_forest.urls')),
 ]
