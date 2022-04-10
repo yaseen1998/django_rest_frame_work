@@ -1,6 +1,7 @@
 from django.urls import path,include
-from .views import movie_list,movie_detail
+from .views import Movie_list,movie_detail,ClearCacheing
 urlpatterns=[
-    path('list/',movie_list,name = 'movie_list'),
+    path('list/',Movie_list.as_view(),name = 'movie_list'),
     path('<int:pk>/',movie_detail,name = 'movie_detail'),
+    path('clear/',ClearCacheing.as_view(),name = 'movie_detail'),
 ]

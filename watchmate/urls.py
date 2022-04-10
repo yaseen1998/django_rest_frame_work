@@ -22,5 +22,6 @@ from .views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", index),
-     path('lest/',include('watchlist_app.api.urls')),
+    path('test/clearcache/', include('clearcache.urls')),
+    path('lest/',include('watchlist_app.api.urls')),
 ]
